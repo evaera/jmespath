@@ -904,7 +904,7 @@ local Functions = (function()
       if meta and meta.__tostring then
         return tostring(args[1])
       end
-      return json.encode(args[1])
+      return HttpService:JSONEncode(args[1])
     end
     return tostring(args[1])
   end
@@ -1021,12 +1021,31 @@ local Functions = (function()
   end
 
   -- Create a hash table of available function names in the local scope.
-  local jp_fns, idx = {}, 1
-  repeat
-    local ln, lv = debug.getlocal(1, idx)
-    if ln ~= nil and ln:sub(1, 3) == 'fn_' then jp_fns[ln] = lv end
-    idx = idx + 1
-  until ln == nil
+  local jp_fns = {
+    fn_abs = fn_abs;
+    fn_sum = fn_sum;
+    fn_avg = fn_avg;
+    fn_ceil = fn_ceil;
+    fn_contains = fn_contains;
+    fn_ends_with = fn_ends_with;
+    fn_floor = fn_floor;
+    fn_join = fn_join;
+    fn_keys = fn_keys;
+    fn_length = fn_length;
+    fn_not_null = fn_not_null;
+    fn_max = fn_max;
+    fn_max_by = fn_max_by;
+    fn_min = fn_min;
+    fn_min_by = fn_min_by;
+    fn_reverse = fn_reverse;
+    fn_sort = fn_sort;
+    fn_sort_by = fn_sort_by;
+    fn_starts_with = fn_starts_with;
+    fn_type = fn_type;
+    fn_to_number = fn_to_number;
+    fn_to_string = fn_to_string;
+    fn_values = fn_values;
+  }
 
   function Functions.new(config)
     return setmetatable({}, {
