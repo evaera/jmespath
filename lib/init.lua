@@ -15,6 +15,22 @@ local function json_decoder(str)
   return HttpService:JSONDecode(str)
 end
 
+local function throw(parser, msg)
+  msg = 'Syntax error at character ' .. parser.token.pos .. '\n'
+    .. parser.expr .. '\n'
+    .. string.rep(' ', parser.token.pos - 1) .. '^\n'
+    .. msg
+  error(msg)
+end
+
+local function table_keys(t)
+  local keys = {}
+  for key in pairs(t) do
+    table.insert(keys, key)
+  end
+  return keys
+end
+
 
 ------------------------------------------
 -- Lexer
@@ -611,13 +627,6 @@ local Parser = (function()
     end
   })
 
-  local function throw(parser, msg)
-    msg = 'Syntax error at character ' .. parser.token.pos .. '\n'
-      .. parser.expr .. '\n'
-      .. string.rep(' ', parser.token.pos - 1) .. '^\n'
-      .. msg
-    error(msg)
-  end
 
   --- Parses an expression.
   -- @param  string expression Expression to parse into an AST
