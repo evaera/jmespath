@@ -1,3 +1,5 @@
+local HttpService = game:GetService("HttpService")
+
 local jmespath = {
   _VERSION     = '0.1.0',
   _DESCRIPTION = 'Declaritively extract data from JSON like structures',
@@ -9,21 +11,10 @@ local jmespath = {
 -- Custom JSON decoding function
 ------------------------------------------
 
-local json = require 'json'
-local json_decoder = json.decode.getDecoder({
-  others = {null = false},
-  object = {
-    setObjectKey = function (object, key, value)
-      local meta = getmetatable(object)
-      if not meta then
-        setmetatable(object, {__jsonorder = {key}})
-      else
-        meta.__jsonorder[#meta.__jsonorder + 1] = key
-      end
-      object[key] = value
-    end
-  }
-})
+local function json_decoder(str)
+  return HttpService:JSONDecode(str)
+end
+
 
 ------------------------------------------
 -- Lexer
